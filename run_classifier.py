@@ -202,6 +202,16 @@ class DataProcessor(object):
       for line in reader:
         lines.append(line)
       return lines
+  @classmethod 
+  def _read_json(cls, input_file, quotechar=None):
+        """Reads a json separated value file."""
+        with Open(input_file, "r") as f:
+          reader=json.load(f)
+          #reader = csv.reader(f, delimiter="\t", quotechar=quotechar)
+          lines = []
+          for line in reader:
+            lines.append(line)
+          return lines
 
 
 class XnliProcessor(DataProcessor):
@@ -338,13 +348,14 @@ class QnliProcessor(DataProcessor):
     def get_train_examples(self, data_dir):
         """See base class."""
         return self._create_examples(
-            self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+            #self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+            self._read_json(os.path.join(data_dir, "train.json")), "train")
 
     def get_dev_examples(self, data_dir):
         """See base class."""
         return self._create_examples(
-            self._read_tsv(os.path.join(data_dir, "dev.tsv")), 
-            "dev_matched")
+            #self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev_matched")
+            self._read_tsv(os.path.join(data_dir, "dev.json")), "dev_matched")
 
     def get_labels(self):
         """See base class."""
@@ -356,10 +367,10 @@ class QnliProcessor(DataProcessor):
         for (i, line) in enumerate(lines):
             if i == 0:
                 continue
-            guid = "%s-%s" % (set_type, line[0])
-            text_a = line[1]
-            text_b = line[2]
-            label = line[-1]
+            guid = line["guid"]
+            text_a = line["question"]
+            text_b = line["sent2"]
+            label = line["label"]
             examples.append(
                 InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
         return examples
