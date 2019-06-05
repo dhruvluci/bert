@@ -355,7 +355,7 @@ class QnliProcessor(DataProcessor):
         """See base class."""
         return self._create_examples(
             #self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev_matched")
-            self._read_tsv(os.path.join(data_dir, "dev.json")), "dev_matched")
+            self._read_json(os.path.join(data_dir, "dev.json")), "dev_matched")
 
     def get_labels(self):
         """See base class."""
