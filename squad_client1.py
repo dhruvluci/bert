@@ -69,7 +69,7 @@ flags.DEFINE_integer(
     "The maximum total input sequence length after WordPiece tokenization. "
     "Sequences longer than this will be truncated, and sequences shorter "
     "than this will be padded.")
-
+max_seq_length=384
 flags.DEFINE_integer(
     "doc_stride", 128,
     "When splitting up a long document into chunks, how much stride to "
