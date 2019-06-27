@@ -22,7 +22,8 @@ import sys
 #sys.path.append(".")
 #sys.path.append("/home/kenaudekarhetal/bert/bert/serving")
 #from serving.tensorflow_serving import apis
-from tensorflow-model-server.tensorflow_serving.apis import prediction_service_pb2_grpc
+from tensorflow_serving.apis import predict_pb2
+from tensorflow_serving.apis import prediction_service_pb2_grpc
 import collections
 import json
 import math
