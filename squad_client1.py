@@ -1151,7 +1151,7 @@ def get_qa(path):
       eval_features = []
 
       eval_writer = FeatureWriter(
-          filename="/home/kenaudekarhetal/bert/bert/tfrandom2.tfrecord",
+          filename="tfrandom3.tfrecord",
           is_training=False)
 
       def append_feature(feature):
@@ -1167,11 +1167,9 @@ def get_qa(path):
           is_training=False,
           output_fn=append_feature)
       eval_writer.close()
-
       return eval_examples, eval_features
-
     features=process_inputs(path)
-    predict_file="/home/kenaudekarhetal/bert/bert/tfrandom2.tfrecord"
+    predict_file="tfrandom3.tfrecord"
     predict_file2=features
     #hostport="35.224.123.236:8021"
     hostport="127.0.0.1:8021"
@@ -1186,7 +1184,7 @@ def get_qa(path):
        example.ParseFromString(string_record1)
        print(example)
        # Exit after 1 iteration as this is purely demonstrative.
-       model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record1, dtype=tf.string, shape=[batch_size]))
+       model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(example, dtype=tf.string, shape=[batch_size]))
        result_future = stub.Predict.future(model_request, 30.0)  
        raw_result = result_future.result().outputs
        rs.append(raw_result)
