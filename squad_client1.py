@@ -32,6 +32,7 @@ import tensorflow as tf
 flags = tf.flags
 
 FLAGS = flags.FLAGS
+tokenizer = tokenization.BasicTokenizer(do_lower_case=do_lower_case)
 
 ## Required parameters
 flags.DEFINE_string(
