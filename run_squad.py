@@ -928,6 +928,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
       writer.write(json.dumps(scores_diff_json, indent=4) + "\n")
 
 def serving_input_receiver_fn():
+	max_seq_length=384
+	batch_size=32
 	feature_spec = { "unique_ids": tf.FixedLenFeature([], tf.int64),
 		"input_ids": tf.FixedLenFeature([max_seq_length], tf.int64),
 		"input_mask": tf.FixedLenFeature([max_seq_length], tf.int64),
