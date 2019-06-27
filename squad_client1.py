@@ -17,12 +17,12 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from serving import tensorflow_serving
+#from tensorflow_serving.apis import
 import sys
-sys.path.append(".")
-sys.path.append("/home/kenaudekarhetal/bert/bert/serving")
-from serving.tensorflow_serving import apis
-from serving.tensorflow_serving.apis import prediction_service_pb2_grpc
+#sys.path.append(".")
+#sys.path.append("/home/kenaudekarhetal/bert/bert/serving")
+#from serving.tensorflow_serving import apis
+from tensorflow_serving.apis import prediction_service_pb2_grpc
 import collections
 import json
 import math
