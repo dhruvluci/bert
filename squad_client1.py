@@ -40,7 +40,8 @@ flags = tf.flags
 
 FLAGS = flags.FLAGS
 tokenizer = tokenization.BasicTokenizer(do_lower_case=False)
-batch_size=8
+x="8"
+batch_size=int(x)
 ## Required parameters
 flags.DEFINE_string(
     "bert_config_file", None,
