@@ -1142,7 +1142,7 @@ def get_qa(path):
       eval_features = []
 
       eval_writer = FeatureWriter(
-          filename=predict_file,
+          filename="tfrandom1.tfrecord",
           is_training=False)
 
       def append_feature(feature):
@@ -1161,7 +1161,7 @@ def get_qa(path):
 
       return eval_examples, eval_features
     features=process_inputs(path)
-    predict_file=features
+    predict_file="tfrandom1.tfrecord"
     hostport="127.0.0.1:8021"
     channel = grpc.insecure_channel(hostport)
     stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
