@@ -74,23 +74,23 @@ flags.DEFINE_integer(
     "doc_stride", 128,
     "When splitting up a long document into chunks, how much stride to "
     "take between chunks.")
-
+doc_stride=128
 flags.DEFINE_integer(
     "max_query_length", 64,
     "The maximum number of tokens for the question. Questions longer than "
     "this will be truncated to this length.")
-
+max_query_length=64
 flags.DEFINE_bool("do_train", False, "Whether to run training.")
-
+do_train=False
 flags.DEFINE_bool("do_predict", False, "Whether to run eval on the dev set.")
-
+do_predict=True
 flags.DEFINE_integer("train_batch_size", 32, "Total batch size for training.")
-
+train_batch_size=32
 flags.DEFINE_integer("predict_batch_size", 8,
                      "Total batch size for predictions.")
-
+predict_batch_size=8
 flags.DEFINE_float("learning_rate", 5e-5, "The initial learning rate for Adam.")
-
+learning_rate=5e-5
 flags.DEFINE_float("num_train_epochs", 3.0,
                    "Total number of training epochs to perform.")
 
@@ -109,14 +109,14 @@ flags.DEFINE_integer(
     "n_best_size", 20,
     "The total number of n-best predictions to generate in the "
     "nbest_predictions.json output file.")
-
+n_best_size=20
 flags.DEFINE_integer(
     "max_answer_length", 30,
     "The maximum length of an answer that can be generated. This is needed "
     "because the start and end predictions are not conditioned on one another.")
-
+max_answer_length=30
 flags.DEFINE_bool("use_tpu", False, "Whether to use TPU or GPU/CPU.")
-
+use_tpu=False
 tf.flags.DEFINE_string(
     "tpu_name", None,
     "The Cloud TPU to use for training. This should be either the name "
