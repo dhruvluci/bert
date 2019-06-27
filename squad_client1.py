@@ -1166,10 +1166,9 @@ def get_qa(path):
           is_training=False,
           output_fn=append_feature)
       eval_writer.close()
-
       return eval_examples, eval_features
     features=process_inputs(path)
-    predict_file="tfrandom1.tfrecord"
+    predict_file="tfrandom2.tfrecord"
     hostport="127.0.0.1:8021"
     channel = grpc.insecure_channel(hostport)
     stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
