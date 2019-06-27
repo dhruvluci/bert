@@ -17,10 +17,9 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-
-from serving.tensorflow_serving.apis import prediction_service_pb2_grpc
 from serving import tensorflow_serving
 from serving.tensorflow_serving import apis
+from serving.tensorflow_serving.apis import prediction_service_pb2_grpc
 import collections
 import json
 import math
