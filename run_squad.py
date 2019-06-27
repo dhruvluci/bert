@@ -1203,7 +1203,7 @@ def main(_):
       predict_batch_size=8)
   estimator._export_to_tpu = False  ## !!important to add this
   estimator.export_saved_model(
-        export_dir_base = EXPORT_PATH,
+        export_dir_base = "gs://legis_qa98/joefuddy3",
         serving_input_receiver_fn = serving_input_receiver_fn)
   #estimator = tf.contrib.tpu.TPUEstimator(
       #use_tpu=FLAGS.use_tpu,
