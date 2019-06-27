@@ -1151,7 +1151,7 @@ def get_qa(path):
       eval_features = []
 
       eval_writer = FeatureWriter(
-          filename="tfrandom2.tfrecord",
+          filename="/home/kenaudekarhetal/bert/bert/tfrandom2.tfrecord",
           is_training=False)
 
       def append_feature(feature):
@@ -1171,7 +1171,7 @@ def get_qa(path):
       return eval_examples, eval_features
 
     features=process_inputs(path)
-    predict_file=path
+    predict_file="/home/kenaudekarhetal/bert/bert/tfrandom2.tfrecord"
     predict_file2=features
     hostport="35.224.123.236:8021"
     channel = grpc.insecure_channel(hostport)
@@ -1179,11 +1179,13 @@ def get_qa(path):
     model_request = predict_pb2.PredictRequest()
     model_request.model_spec.name = 'bert_model'
     string_record = tf.python_io.tf_record_iterator(path=predict_file)
-    model_request.inputs['examples'].CopyFrom(
-       tf.contrib.util.make_tensor_proto(string_record,
-                dtype=tf.string,
-                shape=[batch_size])
-       )
+    for string_record1 in string_record:
+	example = tf.train.Example()
+	example.ParseFromString(string_record)
+	print(example)
+	# Exit after 1 iteration as this is purely demonstrative.
+	break
+    model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record1, dtype=tf.string, shape=[batch_size]))
     result_future = stub.Predict.future(model_request, 30.0)  
     raw_result = result_future.result().outputs
 
@@ -1209,7 +1211,6 @@ def process_output(all_results,
                    eval_features, 
                    input_data, 
                    n_best, n_best_size, max_answer_length):
-  
 	all_predictions, all_nbest_json = write_predictions( eval_examples, 
 							eval_features, 
 							all_results,
