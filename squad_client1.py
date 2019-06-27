@@ -1179,32 +1179,33 @@ def get_qa(path):
     model_request = predict_pb2.PredictRequest()
     model_request.model_spec.name = 'bert_model'
     string_record = tf.python_io.tf_record_iterator(path=predict_file)
+    rs=[]
     for string_record1 in string_record:
        example = tf.train.Example()
        example.ParseFromString(string_record)
        print(example)
        # Exit after 1 iteration as this is purely demonstrative.
-       break
-    model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record1, dtype=tf.string, shape=[batch_size]))
-    result_future = stub.Predict.future(model_request, 30.0)  
-    raw_result = result_future.result().outputs
+       model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record1, dtype=tf.string, shape=[batch_size]))
+       result_future = stub.Predict.future(model_request, 30.0)  
+       raw_result = result_future.result().outputs
+       rs.append(raw_result)
 
     def process_result(result):
-
       unique_id = int(result["unique_ids"].int64_val[0])
       start_logits = [float(x) for x in result["start_logits"].float_val]
       end_logits = [float(x) for x in result["end_logits"].float_val]
-
       # start_logits = np.array(start_logits).reshape(batch_size, max_seq_length)
       # end_logits = np.array(end_logits).reshape(batch_size, max_seq_length)
-
       formatted_result = RawResult(
           unique_id = unique_id,
           start_logits = start_logits,
           end_logits = end_logits)
-
       return formatted_result
-
+    a3=[]
+    for a in rs:
+       a2=process_result(a)
+       a3.append(a2)
+    return a3
 
 def process_output(all_results, 
                    eval_examples, 
