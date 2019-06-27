@@ -1173,7 +1173,8 @@ def get_qa(path):
     features=process_inputs(path)
     predict_file="/home/kenaudekarhetal/bert/bert/tfrandom2.tfrecord"
     predict_file2=features
-    hostport="35.224.123.236:8021"
+    #hostport="35.224.123.236:8021"
+    hostport="127.0.0.1:8021"
     channel = grpc.insecure_channel(hostport)
     stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
     model_request = predict_pb2.PredictRequest()
@@ -1182,7 +1183,7 @@ def get_qa(path):
     rs=[]
     for string_record1 in string_record:
        example = tf.train.Example()
-       example.ParseFromString(string_record)
+       example.ParseFromString(string_record1)
        print(example)
        # Exit after 1 iteration as this is purely demonstrative.
        model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record1, dtype=tf.string, shape=[batch_size]))
