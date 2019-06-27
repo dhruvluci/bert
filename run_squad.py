@@ -928,13 +928,13 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
       writer.write(json.dumps(scores_diff_json, indent=4) + "\n")
 
 def serving_input_receiver_fn():
-	    feature_spec = { "unique_ids": tf.FixedLenFeature([], tf.int64),
-		    "input_ids": tf.FixedLenFeature([max_seq_length], tf.int64),
-		    "input_mask": tf.FixedLenFeature([max_seq_length], tf.int64),
-		    "segment_ids": tf.FixedLenFeature([max_seq_length], tf.int64)}
-        serialized_tf_example = tf.placeholder(dtype=tf.string, shape=[batch_size], name='input_example_tensor') 
-        receiver_tensors = {'examples': serialized_tf_example}
-        features = tf.parse_example(serialized_tf_example, feature_spec)
+	feature_spec = { "unique_ids": tf.FixedLenFeature([], tf.int64),
+		"input_ids": tf.FixedLenFeature([max_seq_length], tf.int64),
+		"input_mask": tf.FixedLenFeature([max_seq_length], tf.int64),
+		"segment_ids": tf.FixedLenFeature([max_seq_length], tf.int64)}
+	serialized_tf_example = tf.placeholder(dtype=tf.string, shape=[batch_size], name='input_example_tensor') 
+	receiver_tensors = {'examples': serialized_tf_example}
+	features = tf.parse_example(serialized_tf_example, feature_spec)
 	return tf.estimator.export.ServingInputReceiver(features, receiver_tensors)
 
 def get_final_text(pred_text, orig_text, do_lower_case):
