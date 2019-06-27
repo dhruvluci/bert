@@ -1180,11 +1180,11 @@ def get_qa(path):
     model_request.model_spec.name = 'bert_model'
     string_record = tf.python_io.tf_record_iterator(path=predict_file)
     for string_record1 in string_record:
-	example = tf.train.Example()
-	example.ParseFromString(string_record)
-	print(example)
-	# Exit after 1 iteration as this is purely demonstrative.
-	break
+       example = tf.train.Example()
+       example.ParseFromString(string_record)
+       print(example)
+       # Exit after 1 iteration as this is purely demonstrative.
+       break
     model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record1, dtype=tf.string, shape=[batch_size]))
     result_future = stub.Predict.future(model_request, 30.0)  
     raw_result = result_future.result().outputs
