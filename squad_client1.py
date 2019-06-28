@@ -1171,8 +1171,8 @@ def get_qa(path):
     features=process_inputs(path)
     predict_file="tfrandom3.tfrecord"
     predict_file2=features
-    #hostport="35.224.123.236:8023"
-    hostport="127.0.0.1:8500"
+    hostport="35.224.123.236:8500"
+    #hostport="127.0.0.1:8500"
     channel = grpc.insecure_channel(hostport)
     stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
     model_request = predict_pb2.PredictRequest()
