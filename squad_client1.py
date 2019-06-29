@@ -1205,7 +1205,7 @@ def get_qa(path):
        a2=process_result(a)
        a3.append(a2)
     return a3
-def get_qa2:
+def get_qa2():
 	hostport="127.0.0.1:8500"
 	channel = grpc.insecure_channel(hostport)
 	stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
