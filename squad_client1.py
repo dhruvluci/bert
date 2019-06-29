@@ -1205,6 +1205,19 @@ def get_qa(path):
        a2=process_result(a)
        a3.append(a2)
     return a3
+def get_qa2:
+	hostport="127.0.0.1:8500"
+	channel = grpc.insecure_channel(hostport)
+	stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
+	model_request = predict_pb2.PredictRequest()
+	model_request.model_spec.name = 'bert_qa'
+	json_file='{"options": {"n_best": true, "n_best_size": 3, "max_answer_length": 30}, "data": [{"id": "001", "question": "Who invented LSTM?", "context": "Many aspects of speech recognition were taken over by a deep learning method called long short-term memory (LSTM), a recurrent neural network published by Hochreiter and Schmidhuber in 1997.[51] LSTM RNNs avoid the vanishing gradient problem and can learn \"Very Deep Learning\" tasks[2] that require memories of events that happened thousands of discrete time steps before, which is important for speech. In 2003, LSTM started to become competitive with traditional speech recognizers on certain tasks.[52] Later it was combined with connectionist temporal classification (CTC)[53] in stacks of LSTM RNNs.[54] In 2015, Googles speech recognition reportedly experienced a dramatic performance jump of 49% through CTC-trained LSTM, which they made available through Google Voice Search."}]}'
+	string_record=tf.io.decode_json_example(json_file)
+	batch_size=8
+	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
+	result_future = stub.Predict.future(model_request, 30.0)  
+	raw_result = result_future.result().outputs
+	return raw_result
 
 def process_output(all_results, 
                    eval_examples, 
