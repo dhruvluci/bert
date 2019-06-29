@@ -1151,7 +1151,7 @@ def get_qa(path):
 		eval_features = []
 
 		eval_writer = FeatureWriter(
-		filename="tfrandom3.tfrecord",
+		filename="tfrandom5.tfrecord",
 		is_training=False)
 
 		def append_feature(feature):
@@ -1169,7 +1169,7 @@ def get_qa(path):
 		eval_writer.close()
 		return eval_examples, eval_features
 	features=process_inputs(path)
-	predict_file="tfrandom3.tfrecord"
+	predict_file="tfrandom5.tfrecord"
 	predict_file2=features
 	hostport="34.74.195.118:8500"
 	#hostport="127.0.0.1:8500"
@@ -1179,9 +1179,10 @@ def get_qa(path):
 	model_request.model_spec.name = 'bert_qa'
 	string_record = tf.python_io.tf_record_iterator(path=predict_file)
 	batch_size=8
-	#model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(str(string_record), dtype=tf.string, shape=[batch_size]))
-	#result_future = stub.Predict.future(model_request, 30.0)  
-	#raw_result = result_future.result().outputs
+	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
+	result_future = stub.Predict.future(model_request, 30.0)  
+	raw_result = result_future.result().outputs
+	print(raw_result)
 	rs=[]
 	for string_record1 in string_record:
 		example = tf.train.Example()
@@ -1217,7 +1218,7 @@ def get_qa2(stringx):
 		eval_features = []
 
 		eval_writer = FeatureWriter(
-		filename="tfrandom3.tfrecord",
+		filename="tfrandom4.tfrecord",
 		is_training=False)
 
 		def append_feature(feature):
@@ -1234,7 +1235,7 @@ def get_qa2(stringx):
 		output_fn=append_feature)
 		eval_writer.close()
 		return eval_examples, eval_features
-	features=process_inputs(path)
+	features=process_inputs(stringx)
 	hostport="34.74.195.118:8500"
 	channel = grpc.insecure_channel(hostport)
 	stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
