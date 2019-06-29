@@ -1193,7 +1193,7 @@ def get_qa(path):
 		result_future = stub.Predict.future(model_request, 30.0)  
 		raw_result = result_future.result().outputs
 		rs.append(raw_result)
-	return raw_result, rs
+	return rs
 
 def process_result(result):
       unique_id = int(result["unique_ids"].int64_val[0])
