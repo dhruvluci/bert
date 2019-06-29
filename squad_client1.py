@@ -1146,54 +1146,54 @@ def validate_flags_or_throw(bert_config):
         "The max_seq_length (%d) must be greater than max_query_length "
         "(%d) + 3" % (FLAGS.max_seq_length, FLAGS.max_query_length))
 def get_qa(path):
-    def process_inputs(input_data):
-      eval_examples = read_squad_data(input_data)
-      eval_features = []
+	def process_inputs(input_data):
+		eval_examples = read_squad_data(input_data)
+		eval_features = []
 
-      eval_writer = FeatureWriter(
-          filename="tfrandom3.tfrecord",
-          is_training=False)
+		eval_writer = FeatureWriter(
+		filename="tfrandom3.tfrecord",
+		is_training=False)
 
-      def append_feature(feature):
-        eval_features.append(feature)
-        eval_writer.process_feature(feature)
+		def append_feature(feature):
+			eval_features.append(feature)
+			eval_writer.process_feature(feature)
 
-      convert_examples_to_features(
-          examples=eval_examples,
-          tokenizer=tokenizer,
-          max_seq_length=max_seq_length,
-          doc_stride=doc_stride,
-          max_query_length=max_query_length,
-          is_training=False,
-          output_fn=append_feature)
-      eval_writer.close()
-      return eval_examples, eval_features
-    features=process_inputs(path)
-    predict_file="tfrandom3.tfrecord"
-    predict_file2=features
-    hostport="34.74.195.118:8500"
-    #hostport="127.0.0.1:8500"
-    channel = grpc.insecure_channel(hostport)
-    stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
-    model_request = predict_pb2.PredictRequest()
-    model_request.model_spec.name = 'bert_qa'
-    string_record = tf.python_io.tf_record_iterator(path=predict_file)
-    batch_size=8
-    model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(str(string_record), dtype=tf.string, shape=[batch_size]))
-    result_future = stub.Predict.future(model_request, 30.0)  
-    raw_result = result_future.result().outputs
-    #rs=[]
-    for string_record1 in string_record:
-       example = tf.train.Example()
-       example.ParseFromString(string_record1)
-       print(example)
-       batch_size=8
-       # Exit after 1 iteration as this is purely demonstrative.
-       #model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record1, dtype=tf.string, shape=[batch_size]))
-       #result_future = stub.Predict.future(model_request, 30.0)  
-       #raw_result = result_future.result().outputs
-       #rs.append(raw_result)
-    return raw_result
+		convert_examples_to_features(
+		examples=eval_examples,
+		tokenizer=tokenizer,
+		max_seq_length=max_seq_length,
+		doc_stride=doc_stride,
+		max_query_length=max_query_length,
+		is_training=False,
+		output_fn=append_feature)
+		eval_writer.close()
+		return eval_examples, eval_features
+	features=process_inputs(path)
+	predict_file="tfrandom3.tfrecord"
+	predict_file2=features
+	hostport="34.74.195.118:8500"
+	#hostport="127.0.0.1:8500"
+	channel = grpc.insecure_channel(hostport)
+	stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
+	model_request = predict_pb2.PredictRequest()
+	model_request.model_spec.name = 'bert_qa'
+	string_record = tf.python_io.tf_record_iterator(path=predict_file)
+	batch_size=8
+	#model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(str(string_record), dtype=tf.string, shape=[batch_size]))
+	#result_future = stub.Predict.future(model_request, 30.0)  
+	#raw_result = result_future.result().outputs
+	rs=[]
+	for string_record1 in string_record:
+		example = tf.train.Example()
+		example.ParseFromString(string_record1)
+		print(example)
+		batch_size=8
+		# Exit after 1 iteration as this is purely demonstrative.
+		model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record1, dtype=tf.string, shape=[batch_size]))
+		result_future = stub.Predict.future(model_request, 30.0)  
+		raw_result = result_future.result().outputs
+		rs.append(raw_result)
+	return raw_result, rs
 
 def process_result(result):
       unique_id = int(result["unique_ids"].int64_val[0])
@@ -1212,6 +1212,29 @@ def process_result(result):
        	#a3.append(a2)
     	#return a3
 def get_qa2(stringx):
+	def process_inputs(input_data):
+		eval_examples = read_squad_data(input_data)
+		eval_features = []
+
+		eval_writer = FeatureWriter(
+		filename="tfrandom3.tfrecord",
+		is_training=False)
+
+		def append_feature(feature):
+			eval_features.append(feature)
+			eval_writer.process_feature(feature)
+
+		convert_examples_to_features(
+		examples=eval_examples,
+		tokenizer=tokenizer,
+		max_seq_length=max_seq_length,
+		doc_stride=doc_stride,
+		max_query_length=max_query_length,
+		is_training=False,
+		output_fn=append_feature)
+		eval_writer.close()
+		return eval_examples, eval_features
+	features=process_inputs(path)
 	hostport="34.74.195.118:8500"
 	channel = grpc.insecure_channel(hostport)
 	stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
@@ -1220,7 +1243,7 @@ def get_qa2(stringx):
 	json_file='{"options": {"n_best": true, "n_best_size": 3, "max_answer_length": 30}, "data": [{"id": "001", "question": "Who invented LSTM?", "context": "Many aspects of speech recognition were taken over by a deep learning method called long short-term memory (LSTM), a recurrent neural network published by Hochreiter and Schmidhuber in 1997.[51] LSTM RNNs avoid the vanishing gradient problem and can learn \"Very Deep Learning\" tasks[2] that require memories of events that happened thousands of discrete time steps before, which is important for speech. In 2003, LSTM started to become competitive with traditional speech recognizers on certain tasks.[52] Later it was combined with connectionist temporal classification (CTC)[53] in stacks of LSTM RNNs.[54] In 2015, Googles speech recognition reportedly experienced a dramatic performance jump of 49% through CTC-trained LSTM, which they made available through Google Voice Search."}]}'
 	string_record=tf.io.decode_json_example(json_file)
 	batch_size=8
-	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(stringx, dtype=tf.string, shape=[batch_size]))
+	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(str(features), dtype=tf.string, shape=[batch_size]))
 	result_future = stub.Predict.future(model_request, 30.0)  
 	raw_result = result_future.result().outputs
 	return raw_result
