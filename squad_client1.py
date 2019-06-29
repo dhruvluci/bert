@@ -1145,6 +1145,29 @@ def validate_flags_or_throw(bert_config):
     raise ValueError(
         "The max_seq_length (%d) must be greater than max_query_length "
         "(%d) + 3" % (FLAGS.max_seq_length, FLAGS.max_query_length))
+def process_inputs(input_data):
+		eval_examples = read_squad_data(input_data)
+		eval_features = []
+
+		eval_writer = FeatureWriter(
+		filename="tfrandom5.tfrecord",
+		is_training=False)
+
+		def append_feature(feature):
+			eval_features.append(feature)
+			eval_writer.process_feature(feature)
+
+		convert_examples_to_features(
+		examples=eval_examples,
+		tokenizer=tokenizer,
+		max_seq_length=max_seq_length,
+		doc_stride=doc_stride,
+		max_query_length=max_query_length,
+		is_training=False,
+		output_fn=append_feature)
+		eval_writer.close()
+		return eval_examples, eval_features
+	
 def get_qa(path):
 	def process_inputs(input_data):
 		eval_examples = read_squad_data(input_data)
