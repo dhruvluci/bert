@@ -1211,7 +1211,7 @@ def process_result(result):
        	#a3.append(a2)
     	#return a3
 def get_qa2(stringx):
-    	hostport="34.74.195.118:8500"
+	hostport="34.74.195.118:8500"
 	channel = grpc.insecure_channel(hostport)
 	stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
 	model_request = predict_pb2.PredictRequest()
