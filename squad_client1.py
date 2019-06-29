@@ -1178,21 +1178,22 @@ def get_qa(path):
     model_request = predict_pb2.PredictRequest()
     model_request.model_spec.name = 'bert_qa'
     string_record = tf.python_io.tf_record_iterator(path=predict_file)
+    batch_size=8
     model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(str(string_record), dtype=tf.string, shape=[batch_size]))
     result_future = stub.Predict.future(model_request, 30.0)  
     raw_result = result_future.result().outputs
-    rs=[]
+    #rs=[]
     for string_record1 in string_record:
        example = tf.train.Example()
        example.ParseFromString(string_record1)
        print(example)
        batch_size=8
        # Exit after 1 iteration as this is purely demonstrative.
-       model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record1, dtype=tf.string, shape=[batch_size]))
-       result_future = stub.Predict.future(model_request, 30.0)  
-       raw_result = result_future.result().outputs
-       rs.append(raw_result)
-       return raw_result
+       #model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record1, dtype=tf.string, shape=[batch_size]))
+       #result_future = stub.Predict.future(model_request, 30.0)  
+       #raw_result = result_future.result().outputs
+       #rs.append(raw_result)
+    return raw_result
 
 def process_result(result):
       unique_id = int(result["unique_ids"].int64_val[0])
