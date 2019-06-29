@@ -1178,6 +1178,9 @@ def get_qa(path):
     model_request = predict_pb2.PredictRequest()
     model_request.model_spec.name = 'bert_qa'
     string_record = tf.python_io.tf_record_iterator(path=predict_file)
+    model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(str(string_record), dtype=tf.string, shape=[batch_size]))
+    result_future = stub.Predict.future(model_request, 30.0)  
+    raw_result = result_future.result().outputs
     rs=[]
     for string_record1 in string_record:
        example = tf.train.Example()
@@ -1208,7 +1211,7 @@ def process_result(result):
        	#a3.append(a2)
     	#return a3
 def get_qa2(stringx):
-	hostport="127.0.0.1:8500"
+    	hostport="34.74.195.118:8500"
 	channel = grpc.insecure_channel(hostport)
 	stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
 	model_request = predict_pb2.PredictRequest()
