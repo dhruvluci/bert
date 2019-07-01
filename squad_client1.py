@@ -1224,7 +1224,7 @@ def get_qa(path):
 		    batch_size=batch_size,
 		    drop_remainder=False))
 	#string_record = tf.io.parse_single_example(d, name_to_features)
-	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(c, dtype=tf.string, shape=[batch_size]))
+	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(d, dtype=tf.string, shape=[batch_size]))
 	result_future = stub.Predict.future(model_request, 30.0)  
 	raw_result = result_future.result().outputs
 	print(raw_result)
