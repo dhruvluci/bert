@@ -1372,19 +1372,24 @@ def get_qa(path):
 	rs=[]
 	record_iterator = tf.python_io.tf_record_iterator(path=predict_file)
 	i=0
+	st=[]
 	for string_record in record_iterator:
 		i+=1
 		if i<10:
-			example = tf.train.Example()
-			example.ParseFromString(string_record)
-			model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
-			result_future = stub.Predict.future(model_request, 30.0)  
-			raw_result = result_future.result().outputs
-			rs.append(raw_result)
+			st.append(string_record)
+			#example = tf.train.Example()
+			#example.ParseFromString(string_record)
+			#model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
+			#result_future = stub.Predict.future(model_request, 30.0)  
+			#raw_result = result_future.result().outputs
+			#rs.append(raw_result)
 			#print(example)
 			print("extraaaaaaaaaaalong")
 		#print(raw_result)
-	#return rs
+	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(st, dtype=tf.string, shape=[batch_size]))
+	result_future = stub.Predict.future(model_request, 30.0)  
+	raw_result = result_future.result().outputs
+	return raw_result
 	#for string_record1 in string_record:
 		#example = tf.train.Example()
 		#example.ParseFromString(string_record1)
