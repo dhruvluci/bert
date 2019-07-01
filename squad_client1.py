@@ -1261,8 +1261,7 @@ def process_output(all_results,
 							all_results,
 							n_best_size = n_best_size, 
 							max_answer_length = max_answer_length,
-							do_lower_case = True,
-							version_2_with_negative = False)	
+							do_lower_case = False)	
 	re = []
 	for i in range(len(all_predictions)):
 		id_ = input_data[i]["id"]
