@@ -1344,7 +1344,7 @@ def get_qa(path):
 	features=write_eval(path)
 	predict_file="eval.tf_record"
 	predict_file2=features
-	hostport="34.74.195.118:8500"
+	hostport="34.67.163.196:8500"
 	#hostport="127.0.0.1:8500"
 	channel = grpc.insecure_channel(hostport)
 	stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
