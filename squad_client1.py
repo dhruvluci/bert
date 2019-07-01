@@ -1394,15 +1394,16 @@ def get_qa(path):
 		#result_future = stub.Predict.future(model_request, 30.0)  
 		#raw_result = result_future.result().outputs
 		#rs.append(raw_result)
-	#ri=[]
-	#for r in rs:
-	clean_result=process_result(rs)
-		#ri.append(clean_result)
+	ri=[]
+	for r in rs:
+		clean_result=process_result(r)
+		final_result=write_predictions(features[0], features[1], clean_result, 5, 30, False)
+		ri.append(final_result)
 	rx =[]
 	i=-1
-	for res in clean_result:
-		final_result=write_predictions(features[0], features[1], res, 5, 30, False)
-		rx.append(final_result)
+	#for res in clean_result:
+		#final_result=write_predictions(features[0], features[1], res, 5, 30, False)
+		#rx.append(final_result)
 	#final_result=process_output(clean_result, 
 			   #features[0], 
 			   #features[1], 
@@ -1414,7 +1415,7 @@ def get_qa(path):
 			   #features[1], 
 			   #path, 5, 5, 30)
 		#rx.append(final_result)
-	return rx
+	return ri
 
 def get_qa2(stringx):
 	def process_inputs(input_data):
