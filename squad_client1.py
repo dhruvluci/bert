@@ -846,7 +846,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
   unique_id_to_result = {}
   for result in all_results:
-    unique_id_to_result[result.unique_id] = result[0]
+    unique_id_to_result[result.unique_id] = result
 
   _PrelimPrediction = collections.namedtuple(  # pylint: disable=invalid-name
       "PrelimPrediction",
@@ -858,7 +858,6 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
   for (example_index, example) in enumerate(all_examples):
     features = example_index_to_features[example_index]
-
     prelim_predictions = []
     # keep track of the minimum score of null start+end of position 0
     score_null = 1000000  # large and positive
