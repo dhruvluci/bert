@@ -837,8 +837,8 @@ RawResult = collections.namedtuple("RawResult",
 def write_predictions(all_examples, all_features, all_results, n_best_size,
                       max_answer_length, do_lower_case):
   """Write final predictions to the json file and log-odds of null if needed."""
-  tf.logging.info("Writing predictions to: %s" % (output_prediction_file))
-  tf.logging.info("Writing nbest to: %s" % (output_nbest_file))
+  #tf.logging.info("Writing predictions to: %s" % (output_prediction_file))
+  #tf.logging.info("Writing nbest to: %s" % (output_nbest_file))
 
   example_index_to_features = collections.defaultdict(list)
   for feature in all_features:
