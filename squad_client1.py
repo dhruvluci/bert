@@ -1405,7 +1405,7 @@ def get_qa(path):
 		#ri.append(clean_result)
 	rx =[]
 	i=-1
-	return clean_result
+	final_result=write_predictions(features[0], features[1], clean_result, 5, 30, False)
 	#final_result=process_output(clean_result, 
 			   #features[0], 
 			   #features[1], 
@@ -1417,7 +1417,7 @@ def get_qa(path):
 			   #features[1], 
 			   #path, 5, 5, 30)
 		#rx.append(final_result)
-	#return final_result
+	return final_result
 
 def get_qa2(stringx):
 	def process_inputs(input_data):
