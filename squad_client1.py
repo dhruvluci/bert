@@ -1338,7 +1338,7 @@ def get_qa(path):
 		rs.append(raw_result)
 		#print(example)
 		print("extraaaaaaaaaaalong")
-		print(raw_result)
+		#print(raw_result)
 	return rs
 	#for string_record1 in string_record:
 		#example = tf.train.Example()
