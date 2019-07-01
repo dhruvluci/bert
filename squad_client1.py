@@ -1214,8 +1214,8 @@ def get_qa(path):
 		"""Decodes a record to a TensorFlow example."""
 		example = tf.parse_single_example(record, name_to_features)
 		return example
-	record=predict_file
-	d = tf.data.TFRecordDataset(input_file)
+	#record=predict_file
+	d = tf.data.TFRecordDataset(predict_file)
 	batch_size=8
 	d = d.apply(
 		tf.contrib.data.map_and_batch(
