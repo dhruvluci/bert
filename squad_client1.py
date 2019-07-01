@@ -1401,18 +1401,19 @@ def get_qa(path):
 		#result_future = stub.Predict.future(model_request, 30.0)  
 		#raw_result = result_future.result().outputs
 		#rs.append(raw_result)
-	rp=[]
+	ri=[]
 	for r in rs:
 		clean_result=process_result(r)
-		rp.append(clean_result)
-	return rp
-	#final_result=process_output(clean_result, 
-                   #features["eval_examples"], 
-                   #features["eval_features"], 
-                   #input_data, 
-                   #n_best, 5, 30, path):
+		ri.append(clean_result)
+	rx =[]
+	for row in ri:
+		final_result=process_output(row, 
+			   features["eval_examples"], 
+			   features["eval_features"], 
+			   input_data, 
+			   n_best, 5, 30, path)
+		rx.append(final_result)
 	
-
 def get_qa2(stringx):
 	def process_inputs(input_data):
 		eval_examples = read_squad_data(input_data)
