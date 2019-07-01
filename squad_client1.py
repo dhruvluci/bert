@@ -1238,7 +1238,8 @@ def get_qa(path):
 		result_future = stub.Predict.future(model_request, 30.0)  
 		raw_result = result_future.result().outputs
 		rs.append(raw_result)
-	  	print(example)
+		print(example)
+		print(raw_result)
 	#for string_record1 in string_record:
 		#example = tf.train.Example()
 		#example.ParseFromString(string_record1)
@@ -1249,7 +1250,7 @@ def get_qa(path):
 		#result_future = stub.Predict.future(model_request, 30.0)  
 		#raw_result = result_future.result().outputs
 		#rs.append(raw_result)
-	return raw_result
+	return rs
 
 def process_result(result):
       unique_id = int(result["unique_ids"].int64_val[0])
