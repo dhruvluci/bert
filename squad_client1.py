@@ -1210,9 +1210,20 @@ def get_qa(path):
 	      "input_mask": tf.FixedLenFeature([seq_length], tf.int64),
 	      "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
 	}
-	string_record = tf.parse_single_example(predict_file, name_to_features)
+	def _decode_record(record, name_to_features):
+		"""Decodes a record to a TensorFlow example."""
+		example = tf.parse_single_example(record, name_to_features)
+		return example
+	record=predict_file
+	d = tf.data.TFRecordDataset(input_file)
 	batch_size=8
-	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
+	d = d.apply(
+		tf.contrib.data.map_and_batch(
+		    lambda record: _decode_record(record, name_to_features),
+		    batch_size=batch_size,
+		    drop_remainder=False))
+	#string_record = tf.io.parse_single_example(d, name_to_features)
+	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(d, dtype=tf.string, shape=[batch_size]))
 	result_future = stub.Predict.future(model_request, 30.0)  
 	raw_result = result_future.result().outputs
 	print(raw_result)
