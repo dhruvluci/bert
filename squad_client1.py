@@ -1406,8 +1406,8 @@ def get_qa(path):
 	for row in ri:
 		i+=1
 		final_result=process_output(row, 
-			   features[i][0], 
-			   features[i][1], 
+			   features[0][i], 
+			   features[1][i], 
 			   path, 5, 5, 30)
 		rx.append(final_result)
 	
