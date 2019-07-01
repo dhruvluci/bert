@@ -843,7 +843,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
   example_index_to_features = collections.defaultdict(list)
   for feature in all_features:
     example_index_to_features[feature.example_index].append(feature)
-
+  all_preds=[]
   unique_id_to_result = {}
   i=0
   for result in all_results:
@@ -859,9 +859,9 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
   all_predictions = collections.OrderedDict()
   all_nbest_json = collections.OrderedDict()
   scores_diff_json = collections.OrderedDict()
-  prelim_predictions = []
   for (example_index, example) in enumerate(all_examples):
     features = example_index_to_features[example_index]
+    prelim_predictions = []
     # keep track of the minimum score of null start+end of position 0
     score_null = 1000000  # large and positive
     min_null_feature_index = 0  # the paragraph slice with min mull score
@@ -989,7 +989,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 	#all_predictions[example.qas_id] = best_non_null_entry.text
 
     all_nbest_json[example.qas_id] = nbest_json
-    return all_predictions, nbest
+    all_preds.append(all_predictions)
+  return all_preds, nbest
 
   #with tf.gfile.GFile(output_prediction_file, "w") as writer:
     #writer.write(json.dumps(all_predictions, indent=4) + "\n")
@@ -1409,7 +1410,7 @@ def get_qa(path):
 	ri=[]
 	#for r in rs:
 	clean_result=process_result(rs)
-	#final_result=write_predictions(features[0], features[1], clean_result, 5, 30, False)
+	final_result=write_predictions(features[0], features[1], clean_result, 5, 30, False)
 	#ri.append(final_result)
 	#rx =[]
 	#i=-1
@@ -1427,7 +1428,7 @@ def get_qa(path):
 			   #features[1], 
 			   #path, 5, 5, 30)
 		#rx.append(final_result)
-	return clean_result
+	return final_result
 
 def get_qa2(stringx):
 	def process_inputs(input_data):
