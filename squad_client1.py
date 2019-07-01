@@ -1205,10 +1205,10 @@ def get_qa(path):
 	#string_record = tf.python_io.tf_record_iterator(path=predict_file)
 	seq_length=384
 	name_to_features = {
-	      "unique_ids": tf.FixedLenFeature([], tf.int64),
-	      "input_ids": tf.FixedLenFeature([seq_length], tf.int64),
-	      "input_mask": tf.FixedLenFeature([seq_length], tf.int64),
-	      "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
+	      "unique_ids": tf.FixedLenFeature([], tf.string),
+	      "input_ids": tf.FixedLenFeature([seq_length], tf.string),
+	      "input_mask": tf.FixedLenFeature([seq_length], tf.string),
+	      "segment_ids": tf.FixedLenFeature([seq_length], tf.string),
 	}
 	def _decode_record(record, name_to_features):
 		"""Decodes a record to a TensorFlow example."""
