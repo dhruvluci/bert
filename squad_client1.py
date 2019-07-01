@@ -859,19 +859,21 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
   all_predictions = collections.OrderedDict()
   all_nbest_json = collections.OrderedDict()
   scores_diff_json = collections.OrderedDict()
-
+  prelim_predictions = []
   for (example_index, example) in enumerate(all_examples):
     features = example_index_to_features[example_index]
-    prelim_predictions = []
     # keep track of the minimum score of null start+end of position 0
     score_null = 1000000  # large and positive
     min_null_feature_index = 0  # the paragraph slice with min mull score
     null_start_logit = 0  # the start logit at the slice with min null score
     null_end_logit = 0  # the end logit at the slice with min null score
+    i=0
     for (feature_index, feature) in enumerate(features):
+      i+=1
       result = unique_id_to_result[feature.unique_id]
       start_indexes = _get_best_indexes(result[1], n_best_size)
       end_indexes = _get_best_indexes(result[2], n_best_size)
+      print(i)
       # if we could have irrelevant answers, get the min score of irrelevant
       for start_index in start_indexes:
         for end_index in end_indexes:
