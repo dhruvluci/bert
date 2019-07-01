@@ -1169,18 +1169,34 @@ def process_inputs(input_data):
 		return eval_examples, eval_features
 	
 def get_qa(path):
-	def process_inputs(input_data):
-		eval_examples = read_squad_data(input_data)
-		eval_features = []
-
+	def write_eval(predict_file):
+		eval_examples = read_squad_examples(
+			input_file=predict_file, is_training=False)
 		eval_writer = FeatureWriter(
-		filename="tfrandom5.tfrecord",
-		is_training=False)
-
+			filename="eval.tf_record",
+			is_training=False)
+		eval_features = []
 		def append_feature(feature):
 			eval_features.append(feature)
 			eval_writer.process_feature(feature)
-
+		convert_examples_to_features(
+		examples=eval_examples,
+		tokenizer=tokenizer,
+		max_seq_length=FLAGS.max_seq_length,
+		doc_stride=FLAGS.doc_stride,
+		max_query_length=FLAGS.max_query_length,
+		is_training=False,
+		output_fn=append_feature)
+		eval_writer.close()
+	def process_inputs(input_data):
+		eval_examples = read_squad_data(input_data)
+		eval_features = []
+		eval_writer = FeatureWriter(
+		filename="tfrandom5.tfrecord",
+		is_training=False)
+		def append_feature(feature):
+			eval_features.append(feature)
+			eval_writer.process_feature(feature)
 		convert_examples_to_features(
 		examples=eval_examples,
 		tokenizer=tokenizer,
@@ -1191,8 +1207,8 @@ def get_qa(path):
 		output_fn=append_feature)
 		eval_writer.close()
 		return eval_examples, eval_features
-	features=process_inputs(path)
-	predict_file="tfrandom5.tfrecord"
+	features=write_eval(path)
+	predict_file="eval.tf_record"
 	predict_file2=features
 	#hostport="34.74.195.118:8500"
 	hostport="127.0.0.1:8500"
