@@ -1255,17 +1255,17 @@ def process_output(all_results,
 
 def process_result(all_result):
       all_results=[]
-      result=all_result
-      #for result in all_result:
-      unique_id = int(result["unique_ids"].int64_val[0])
-      start_logits = [float(x) for x in result["start_logits"].float_val]
-      end_logits = [float(x) for x in result["end_logits"].float_val]
-      # start_logits = np.array(start_logits).reshape(batch_size, max_seq_length)
-      # end_logits = np.array(end_logits).reshape(batch_size, max_seq_length)
-      all_results.append(RawResult(
-	  unique_id = unique_id,
-	  start_logits = start_logits,
-	  end_logits = end_logits))
+      #result=all_result
+      for result in all_result:
+	      unique_id = int(result["unique_ids"].int64_val[0])
+	      start_logits = [float(x) for x in result["start_logits"].float_val]
+	      end_logits = [float(x) for x in result["end_logits"].float_val]
+	      # start_logits = np.array(start_logits).reshape(batch_size, max_seq_length)
+	      # end_logits = np.array(end_logits).reshape(batch_size, max_seq_length)
+	      all_results.append(RawResult(
+		  unique_id = unique_id,
+		  start_logits = start_logits,
+		  end_logits = end_logits))
       return all_results
     	#a3=[]
     	#for a in result:
@@ -1380,16 +1380,16 @@ def get_qa(path):
 			st.append(string_record)
 			#example = tf.train.Example()
 			#example.ParseFromString(string_record)
-			#model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
-			#result_future = stub.Predict.future(model_request, 30.0)  
-			#raw_result = result_future.result().outputs
-			#rs.append(raw_result)
+			model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
+			result_future = stub.Predict.future(model_request, 30.0)  
+			raw_result = result_future.result().outputs
+			rs.append(raw_result)
 			#print(example)
 			print("extraaaaaaaaaaalong")
 		#print(raw_result)
-	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(st, dtype=tf.string, shape=[batch_size]))
-	result_future = stub.Predict.future(model_request, 30.0)  
-	raw_result = result_future.result().outputs
+	#model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(st, dtype=tf.string, shape=[batch_size]))
+	#result_future = stub.Predict.future(model_request, 30.0)  
+	#raw_result = result_future.result().outputs
 	#return raw_result
 	#for string_record1 in string_record:
 		#example = tf.train.Example()
@@ -1403,7 +1403,7 @@ def get_qa(path):
 		#rs.append(raw_result)
 	ri=[]
 	#for r in rs:
-	clean_result=process_result(raw_result)
+	clean_result=process_result(rs)
 	#final_result=write_predictions(features[0], features[1], clean_result, 5, 30, False)
 	#ri.append(final_result)
 	#rx =[]
