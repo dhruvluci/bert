@@ -1257,17 +1257,19 @@ def process_output(all_results,
 					}))
 	return re
 
-def process_result(result):
-      unique_id = int(result["unique_ids"].int64_val[0])
-      start_logits = [float(x) for x in result["start_logits"].float_val]
-      end_logits = [float(x) for x in result["end_logits"].float_val]
-      # start_logits = np.array(start_logits).reshape(batch_size, max_seq_length)
-      # end_logits = np.array(end_logits).reshape(batch_size, max_seq_length)
-      formatted_result = RawResult(
-          unique_id = unique_id,
-          start_logits = start_logits,
-          end_logits = end_logits)
-      return formatted_result
+def process_result(all_result):
+      all_results=[]
+      for result in all_result:
+	      unique_id = int(result["unique_ids"].int64_val[0])
+	      start_logits = [float(x) for x in result["start_logits"].float_val]
+	      end_logits = [float(x) for x in result["end_logits"].float_val]
+	      # start_logits = np.array(start_logits).reshape(batch_size, max_seq_length)
+	      # end_logits = np.array(end_logits).reshape(batch_size, max_seq_length)
+	      all_results.append(RawResult(
+		  unique_id = unique_id,
+		  start_logits = start_logits,
+		  end_logits = end_logits))
+      return all_results
     	#a3=[]
     	#for a in result:
        	#a2=process_result(a)
@@ -1397,14 +1399,14 @@ def get_qa(path):
 		#result_future = stub.Predict.future(model_request, 30.0)  
 		#raw_result = result_future.result().outputs
 		#rs.append(raw_result)
-	ri=[]
-	for r in rs:
-		clean_result=process_result(r)
-		ri.append(clean_result)
+	#ri=[]
+	#for r in rs:
+	clean_result=process_result(rs)
+		#ri.append(clean_result)
 	rx =[]
 	i=-1
 	#return ri
-	final_result=process_output(rs, 
+	final_result=process_output(clean_result, 
 			   features[0], 
 			   features[1], 
 			   path, 5, 5, 30)
