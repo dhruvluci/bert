@@ -1390,7 +1390,7 @@ def get_qa(path):
 	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(st, dtype=tf.string, shape=[batch_size]))
 	result_future = stub.Predict.future(model_request, 30.0)  
 	raw_result = result_future.result().outputs
-	return raw_result
+	#return raw_result
 	#for string_record1 in string_record:
 		#example = tf.train.Example()
 		#example.ParseFromString(string_record1)
@@ -1403,7 +1403,7 @@ def get_qa(path):
 		#rs.append(raw_result)
 	ri=[]
 	#for r in rs:
-	clean_result=process_result(rs)
+	clean_result=process_result(raw_result)
 	final_result=write_predictions(features[0], features[1], clean_result, 5, 30, False)
 	ri.append(final_result)
 	rx =[]
@@ -1411,10 +1411,10 @@ def get_qa(path):
 	#for res in clean_result:
 		#final_result=write_predictions(features[0], features[1], res, 5, 30, False)
 		#rx.append(final_result)
-	final_result2=process_output(clean_result, 
-			   features[0], 
-			   features[1], 
-			   features[0], True, 5, 30)
+	#final_result2=process_output(clean_result, 
+			   #features[0], 
+			   #features[1], 
+			   #features[0], True, 5, 30)
 	#for row in rs:
 		#i+=1
 		#final_result=process_output(row, 
@@ -1422,7 +1422,7 @@ def get_qa(path):
 			   #features[1], 
 			   #path, 5, 5, 30)
 		#rx.append(final_result)
-	return final_result2
+	return final_result
 
 def get_qa2(stringx):
 	def process_inputs(input_data):
