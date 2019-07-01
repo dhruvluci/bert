@@ -1406,12 +1406,14 @@ def get_qa(path):
 		clean_result=process_result(r)
 		ri.append(clean_result)
 	rx =[]
+	i=-1
 	for row in ri:
+		i+=1
 		final_result=process_output(row, 
-			   features["eval_examples"], 
-			   features["eval_features"], 
-			   input_data, 
-			   n_best, 5, 30, path)
+			   features[i]["eval_examples"], 
+			   features[i]["eval_features"], 
+			   path, 
+			   n_best, 5, 30)
 		rx.append(final_result)
 	
 def get_qa2(stringx):
