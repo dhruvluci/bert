@@ -867,16 +867,9 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
     null_end_logit = 0  # the end logit at the slice with min null score
     for (feature_index, feature) in enumerate(features):
       result = unique_id_to_result[feature.unique_id]
-      start_indexes = _get_best_indexes(result.start_logits, n_best_size)
-      end_indexes = _get_best_indexes(result.end_logits, n_best_size)
+      start_indexes = _get_best_indexes(result[1], n_best_size)
+      end_indexes = _get_best_indexes(result[2], n_best_size)
       # if we could have irrelevant answers, get the min score of irrelevant
-      if FLAGS.version_2_with_negative:
-        feature_null_score = result.start_logits[0] + result.end_logits[0]
-        if feature_null_score < score_null:
-          score_null = feature_null_score
-          min_null_feature_index = feature_index
-          null_start_logit = result.start_logits[0]
-          null_end_logit = result.end_logits[0]
       for start_index in start_indexes:
         for end_index in end_indexes:
           # We could hypothetically create invalid predictions, e.g., predict
@@ -902,8 +895,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
                   feature_index=feature_index,
                   start_index=start_index,
                   end_index=end_index,
-                  start_logit=result.start_logits[start_index],
-                  end_logit=result.end_logits[end_index]))
+                  start_logit=result[1][start_index],
+                  end_logit=result[2][end_index]))
 		
     prelim_predictions = sorted(
         prelim_predictions,
@@ -984,7 +977,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
     
 	#if score_diff > FLAGS.null_score_diff_threshold:
 	#all_predictions[example.qas_id] = ""
-	#else:
+	#else: 
 	#all_predictions[example.qas_id] = best_non_null_entry.text
 
     all_nbest_json[example.qas_id] = nbest_json
