@@ -1316,7 +1316,7 @@ def get_qa(path):
 	#record=predict_file
 	#c= _decode_record(predict_file, name_to_features)
 	d = tf.data.TFRecordDataset(predict_file)
-	batch_size=8
+	batch_size=32
 	d = d.apply(
 		tf.contrib.data.map_and_batch(
 		    lambda record: _decode_record(record, name_to_features),
