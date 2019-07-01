@@ -1250,7 +1250,54 @@ def process_inputs(input_data):
 		output_fn=append_feature)
 		eval_writer.close()
 		return eval_examples, eval_features
+	
+def process_output(all_results, 
+                   eval_examples, 
+                   eval_features, 
+                   input_data, 
+                   n_best, n_best_size, max_answer_length):
+	all_predictions, all_nbest_json = write_predictions( eval_examples, 
+							eval_features, 
+							all_results,
+							n_best_size = n_best_size, 
+							max_answer_length = max_answer_length,
+							do_lower_case = True,
+							version_2_with_negative = False)	
+	re = []
+	for i in range(len(all_predictions)):
+		id_ = input_data[i]["id"]
+		if n_best:
+			re.append(collections.OrderedDict({
+					"id": id_,
+					"question": input_data[i]["question"],
+					"best_prediction": all_predictions[id_],
+					"n_best_predictions": all_nbest_json[id_]
+					}))
+		else:
+			re.append(collections.OrderedDict({
+					"id": id_,
+					"question": input_data[i]["question"],
+					"best_prediction": all_predictions[id_]
+					}))
+	return re
 
+def process_result(result):
+      unique_id = int(result["unique_ids"].int64_val[0])
+      start_logits = [float(x) for x in result["start_logits"].float_val]
+      end_logits = [float(x) for x in result["end_logits"].float_val]
+      # start_logits = np.array(start_logits).reshape(batch_size, max_seq_length)
+      # end_logits = np.array(end_logits).reshape(batch_size, max_seq_length)
+      formatted_result = RawResult(
+          unique_id = unique_id,
+          start_logits = start_logits,
+          end_logits = end_logits)
+      return formatted_result
+    	#a3=[]
+    	#for a in result:
+       	#a2=process_result(a)
+       	#a3.append(a2)
+    	#return a3
+	
 def get_qa(path):
 	def write_eval(predict_file):
 		eval_examples = read_squad_examples(
@@ -1271,6 +1318,7 @@ def get_qa(path):
 		is_training=False,
 		output_fn=append_feature)
 		eval_writer.close()
+		return eval_examples, eval_features
 	def process_inputs(input_data):
 		eval_examples = read_squad_data(input_data)
 		eval_features = []
@@ -1329,17 +1377,20 @@ def get_qa(path):
 	#print(raw_result)
 	rs=[]
 	record_iterator = tf.python_io.tf_record_iterator(path=predict_file)
+	i=0
 	for string_record in record_iterator:
-		example = tf.train.Example()
-		example.ParseFromString(string_record)
-		model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
-		result_future = stub.Predict.future(model_request, 30.0)  
-		raw_result = result_future.result().outputs
-		rs.append(raw_result)
-		#print(example)
-		print("extraaaaaaaaaaalong")
+		i+=1
+		if i<10:
+			example = tf.train.Example()
+			example.ParseFromString(string_record)
+			model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
+			result_future = stub.Predict.future(model_request, 30.0)  
+			raw_result = result_future.result().outputs
+			rs.append(raw_result)
+			#print(example)
+			print("extraaaaaaaaaaalong")
 		#print(raw_result)
-	return rs
+	#return rs
 	#for string_record1 in string_record:
 		#example = tf.train.Example()
 		#example.ParseFromString(string_record1)
@@ -1350,24 +1401,15 @@ def get_qa(path):
 		#result_future = stub.Predict.future(model_request, 30.0)  
 		#raw_result = result_future.result().outputs
 		#rs.append(raw_result)
+	clean_result=process_result(rs)
+	return clean_result
+	#final_result=process_output(clean_result, 
+                   #features["eval_examples"], 
+                   #features["eval_features"], 
+                   #input_data, 
+                   #n_best, 5, 30, path):
 	
 
-def process_result(result):
-      unique_id = int(result["unique_ids"].int64_val[0])
-      start_logits = [float(x) for x in result["start_logits"].float_val]
-      end_logits = [float(x) for x in result["end_logits"].float_val]
-      # start_logits = np.array(start_logits).reshape(batch_size, max_seq_length)
-      # end_logits = np.array(end_logits).reshape(batch_size, max_seq_length)
-      formatted_result = RawResult(
-          unique_id = unique_id,
-          start_logits = start_logits,
-          end_logits = end_logits)
-      return formatted_result
-    	#a3=[]
-    	#for a in result:
-       	#a2=process_result(a)
-       	#a3.append(a2)
-    	#return a3
 def get_qa2(stringx):
 	def process_inputs(input_data):
 		eval_examples = read_squad_data(input_data)
@@ -1405,35 +1447,7 @@ def get_qa2(stringx):
 	raw_result = result_future.result().outputs
 	return raw_result
 
-def process_output(all_results, 
-                   eval_examples, 
-                   eval_features, 
-                   input_data, 
-                   n_best, n_best_size, max_answer_length):
-	all_predictions, all_nbest_json = write_predictions( eval_examples, 
-							eval_features, 
-							all_results,
-							n_best_size = n_best_size, 
-							max_answer_length = max_answer_length,
-							do_lower_case = True,
-							version_2_with_negative = False)	
-	re = []
-	for i in range(len(all_predictions)):
-		id_ = input_data[i]["id"]
-		if n_best:
-			re.append(collections.OrderedDict({
-					"id": id_,
-					"question": input_data[i]["question"],
-					"best_prediction": all_predictions[id_],
-					"n_best_predictions": all_nbest_json[id_]
-					}))
-		else:
-			re.append(collections.OrderedDict({
-					"id": id_,
-					"question": input_data[i]["question"],
-					"best_prediction": all_predictions[id_]
-					}))
-	return re
+
 def main(_):
   tf.logging.set_verbosity(tf.logging.INFO)
 
