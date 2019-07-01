@@ -1255,7 +1255,7 @@ def process_output(all_results,
 
 def process_result(result):
       all_results=[]
-	      for result in all_result:
+      for result in all_result:
 	      unique_id = int(result["unique_ids"].int64_val[0])
 	      start_logits = [float(x) for x in result["start_logits"].float_val]
 	      end_logits = [float(x) for x in result["end_logits"].float_val]
