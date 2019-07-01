@@ -846,10 +846,10 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
   unique_id_to_result = {}
   i=0
-  #for result in all_results:
-    #i+=1
-  result=all_results
-  unique_id_to_result[result.unique_id] = result
+  for result in all_results:
+    	i+=1
+  	#result=all_results
+  	unique_id_to_result[result.unique_id] = result
   print(i)
 
   _PrelimPrediction = collections.namedtuple(  # pylint: disable=invalid-name
@@ -1254,17 +1254,17 @@ def process_output(all_results,
 	return re
 
 def process_result(result):
-      #all_results=[]
-      #for result in all_result:
-      unique_id = int(result["unique_ids"].int64_val[0])
-      start_logits = [float(x) for x in result["start_logits"].float_val]
-      end_logits = [float(x) for x in result["end_logits"].float_val]
-      # start_logits = np.array(start_logits).reshape(batch_size, max_seq_length)
-      # end_logits = np.array(end_logits).reshape(batch_size, max_seq_length)
-      all_results = RawResult(
-	  unique_id = unique_id,
-	  start_logits = start_logits,
-	  end_logits = end_logits)
+      all_results=[]
+	      for result in all_result:
+	      unique_id = int(result["unique_ids"].int64_val[0])
+	      start_logits = [float(x) for x in result["start_logits"].float_val]
+	      end_logits = [float(x) for x in result["end_logits"].float_val]
+	      # start_logits = np.array(start_logits).reshape(batch_size, max_seq_length)
+	      # end_logits = np.array(end_logits).reshape(batch_size, max_seq_length)
+	      all_results.append(RawResult(
+		  unique_id = unique_id,
+		  start_logits = start_logits,
+		  end_logits = end_logits))
       return all_results
     	#a3=[]
     	#for a in result:
@@ -1396,10 +1396,10 @@ def get_qa(path):
 		#raw_result = result_future.result().outputs
 		#rs.append(raw_result)
 	ri=[]
-	for r in rs:
-		clean_result=process_result(r)
-		final_result=write_predictions(features[0], features[1], clean_result, 5, 30, False)
-		ri.append(final_result)
+	#for r in rs:
+	clean_result=process_result(rs)
+	final_result=write_predictions(features[0], features[1], clean_result, 5, 30, False)
+	ri.append(final_result)
 	rx =[]
 	i=-1
 	#for res in clean_result:
