@@ -980,6 +980,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
     assert len(nbest_json) >= 1
     all_predictions[example.qas_id] = nbest_json[0]["text"]
+    all_preds.append(nbest_json[0]["text"])
     print("all_preds len: " + str(len(all_predictions)))
 
     
@@ -989,7 +990,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 	#all_predictions[example.qas_id] = best_non_null_entry.text
 
     all_nbest_json[example.qas_id] = nbest_json
-    all_preds.append(all_predictions)
+    #all_preds.append(all_predictions)
   return all_preds, nbest
 
   #with tf.gfile.GFile(output_prediction_file, "w") as writer:
