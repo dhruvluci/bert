@@ -1253,7 +1253,7 @@ def process_output(all_results,
 					}))
 	return re
 
-def process_result(result):
+def process_result(all_result):
       all_results=[]
       for result in all_result:
 	      unique_id = int(result["unique_ids"].int64_val[0])
