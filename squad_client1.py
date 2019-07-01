@@ -844,6 +844,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
   for feature in all_features:
     example_index_to_features[feature.example_index].append(feature)
   all_preds=[]
+  all_preds2=[]
   unique_id_to_result = {}
   i=0
   for result in all_results:
@@ -990,8 +991,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 	#all_predictions[example.qas_id] = best_non_null_entry.text
 
     all_nbest_json[example.qas_id] = nbest_json
-    #all_preds.append(all_predictions)
-  return all_preds, nbest
+    all_preds2.append(all_nbest_json)
+  return all_preds, all_preds2
 
   #with tf.gfile.GFile(output_prediction_file, "w") as writer:
     #writer.write(json.dumps(all_predictions, indent=4) + "\n")
