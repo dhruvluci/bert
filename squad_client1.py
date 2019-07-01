@@ -1263,7 +1263,7 @@ def process_result(result):
       all_results = RawResult(
 	  unique_id = unique_id,
 	  start_logits = start_logits,
-	  end_logits = end_logits))
+	  end_logits = end_logits)
       return all_results
     	#a3=[]
     	#for a in result:
