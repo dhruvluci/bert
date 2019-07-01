@@ -1203,6 +1203,7 @@ def get_qa(path):
 	#reader = tf.TFRecordReader()
 	#serialized_example = reader.read(predict_file)
 	#string_record = tf.python_io.tf_record_iterator(path=predict_file)
+	seq_length=384
 	name_to_features = {
 	      "unique_ids": tf.FixedLenFeature([], tf.int64),
 	      "input_ids": tf.FixedLenFeature([seq_length], tf.int64),
