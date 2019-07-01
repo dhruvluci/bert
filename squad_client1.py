@@ -911,6 +911,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
     seen_predictions = {}
     nbest = []
+    print("prelim_preds len: " + str(len(prelim_predictions)))
     for pred in prelim_predictions:
       if len(nbest) >= n_best_size:
         break
@@ -945,6 +946,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
               text=final_text,
               start_logit=pred.start_logit,
               end_logit=pred.end_logit))
+      print("nbest len: " + str(len(nbest)))
 
     # if we didn't inlude the empty option in the n-best, inlcude it
     # In very rare edge cases we could have no valid predictions. So we
@@ -976,7 +978,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
     assert len(nbest_json) >= 1
     all_predictions[example.qas_id] = nbest_json[0]["text"]
-    
+    print("all_preds len: " + str(len(all_predictions)))
+
     
 	#if score_diff > FLAGS.null_score_diff_threshold:
 	#all_predictions[example.qas_id] = ""
@@ -984,7 +987,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 	#all_predictions[example.qas_id] = best_non_null_entry.text
 
     all_nbest_json[example.qas_id] = nbest_json
-    return all_predictions, nbest_json
+    return all_predictions, nbest
 
   #with tf.gfile.GFile(output_prediction_file, "w") as writer:
     #writer.write(json.dumps(all_predictions, indent=4) + "\n")
