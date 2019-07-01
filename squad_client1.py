@@ -1413,7 +1413,7 @@ def get_qa(path):
 			   features[i][0], 
 			   features[i][1], 
 			   path, 
-			   n_best, 5, 30)
+			   5, 5, 30)
 		rx.append(final_result)
 	
 def get_qa2(stringx):
