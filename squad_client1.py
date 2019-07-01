@@ -1273,6 +1273,26 @@ def process_result(result):
        	#a2=process_result(a)
        	#a3.append(a2)
     	#return a3
+def write_eval(predict_file):
+		eval_examples = read_squad_examples(
+			input_file=predict_file, is_training=False)
+		eval_writer = FeatureWriter(
+			filename="eval.tf_record",
+			is_training=False)
+		eval_features = []
+		def append_feature(feature):
+			eval_features.append(feature)
+			eval_writer.process_feature(feature)
+		convert_examples_to_features(
+		examples=eval_examples,
+		tokenizer=tokenizer,
+		max_seq_length=384,
+		doc_stride=128,
+		max_query_length=40,
+		is_training=False,
+		output_fn=append_feature)
+		eval_writer.close()
+		return eval_examples, eval_features
 	
 def get_qa(path):
 	def write_eval(predict_file):
@@ -1288,9 +1308,9 @@ def get_qa(path):
 		convert_examples_to_features(
 		examples=eval_examples,
 		tokenizer=tokenizer,
-		max_seq_length=FLAGS.max_seq_length,
-		doc_stride=FLAGS.doc_stride,
-		max_query_length=FLAGS.max_query_length,
+		max_seq_length=384,
+		doc_stride=128,
+		max_query_length=40,
 		is_training=False,
 		output_fn=append_feature)
 		eval_writer.close()
@@ -1388,8 +1408,7 @@ def get_qa(path):
 		final_result=process_output(row, 
 			   features[i][0], 
 			   features[i][1], 
-			   path, 
-			   5, 5, 30)
+			   path, 5, 5, 30)
 		rx.append(final_result)
 	
 def get_qa2(stringx):
