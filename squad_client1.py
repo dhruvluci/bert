@@ -1205,17 +1205,17 @@ def get_qa(path):
 	#string_record = tf.python_io.tf_record_iterator(path=predict_file)
 	seq_length=384
 	name_to_features = {
-	      "unique_ids": tf.FixedLenFeature([], tf.string),
-	      "input_ids": tf.FixedLenFeature([seq_length], tf.string),
-	      "input_mask": tf.FixedLenFeature([seq_length], tf.string),
-	      "segment_ids": tf.FixedLenFeature([seq_length], tf.string),
+	      "unique_ids": tf.FixedLenFeature([], tf.int64),
+	      "input_ids": tf.FixedLenFeature([seq_length], tf.int64),
+	      "input_mask": tf.FixedLenFeature([seq_length], tf.int64),
+	      "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
 	}
 	def _decode_record(record, name_to_features):
 		"""Decodes a record to a TensorFlow example."""
 		example = tf.parse_single_example(record, name_to_features)
 		return example
 	#record=predict_file
-	c= _decode_record(predict_file, name_to_features)
+	#c= _decode_record(predict_file, name_to_features)
 	d = tf.data.TFRecordDataset(predict_file)
 	batch_size=8
 	d = d.apply(
@@ -1223,12 +1223,23 @@ def get_qa(path):
 		    lambda record: _decode_record(record, name_to_features),
 		    batch_size=batch_size,
 		    drop_remainder=False))
+	
 	#string_record = tf.io.parse_single_example(d, name_to_features)
-	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(d, dtype=tf.string, shape=[batch_size]))
-	result_future = stub.Predict.future(model_request, 30.0)  
-	raw_result = result_future.result().outputs
-	print(raw_result)
-	#rs=[]
+	#model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(d, dtype=tf.string, shape=[batch_size]))
+	#result_future = stub.Predict.future(model_request, 30.0)  
+	#raw_result = result_future.result().outputs
+	#print(raw_result)
+	rs=[]
+	record_iterator = tf.python_io.tf_record_iterator(path=predict_file)
+	for string_record in record_iterator:
+		example = tf.train.Example()
+		example.ParseFromString(string_record)
+		model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(example, dtype=tf.string, shape=[batch_size]))
+		result_future = stub.Predict.future(model_request, 30.0)  
+		raw_result = result_future.result().outputs
+		rs.append(raw_result)
+
+	  print(example)
 	#for string_record1 in string_record:
 		#example = tf.train.Example()
 		#example.ParseFromString(string_record1)
