@@ -1200,8 +1200,8 @@ def get_qa(path):
 	stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
 	model_request = predict_pb2.PredictRequest()
 	model_request.model_spec.name = 'bert_qa'
-	reader = tf.TFRecordReader()
-	serialized_example = reader.read(predict_file)
+	#reader = tf.TFRecordReader()
+	#serialized_example = reader.read(predict_file)
 	#string_record = tf.python_io.tf_record_iterator(path=predict_file)
 	name_to_features = {
 	      "unique_ids": tf.FixedLenFeature([], tf.int64),
@@ -1209,7 +1209,7 @@ def get_qa(path):
 	      "input_mask": tf.FixedLenFeature([seq_length], tf.int64),
 	      "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
 	}
-	string_record = tf.parse_single_example(serialized_example, name_to_features)
+	string_record = tf.parse_single_example(predict_file, name_to_features)
 	batch_size=8
 	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
 	result_future = stub.Predict.future(model_request, 30.0)  
