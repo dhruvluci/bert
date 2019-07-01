@@ -40,7 +40,7 @@ flags = tf.flags
 
 FLAGS = flags.FLAGS
 #tokenizer = tokenization.BasicTokenizer(do_lower_case=False)
-vocab_file="/home/khetz96/bert/cased_L-12_H-768_A-12/vocab.txt"
+vocab_file="/home/kenaudekarhetal/qa.luci.ai/bert/cased_L-12_H-768_A-12/vocab.txt"
 tokenizer = tokenization.FullTokenizer(
       vocab_file=vocab_file, do_lower_case=False)
 x="8"
