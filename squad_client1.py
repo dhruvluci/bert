@@ -1400,7 +1400,7 @@ def get_qa(path):
 		#ri.append(clean_result)
 	rx =[]
 	i=-1
-	for res in clean_result
+	for res in clean_result:
 		final_result=write_predictions(features[0], features[1], res, 5, 30, False)
 		rx.append(final_result)
 	#final_result=process_output(clean_result, 
