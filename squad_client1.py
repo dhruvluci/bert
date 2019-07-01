@@ -1254,17 +1254,18 @@ def process_output(all_results,
 	return re
 
 def process_result(all_result):
-      all_results=[]
-      for result in all_result:
-	      unique_id = int(result["unique_ids"].int64_val[0])
-	      start_logits = [float(x) for x in result["start_logits"].float_val]
-	      end_logits = [float(x) for x in result["end_logits"].float_val]
-	      # start_logits = np.array(start_logits).reshape(batch_size, max_seq_length)
-	      # end_logits = np.array(end_logits).reshape(batch_size, max_seq_length)
-	      all_results.append(RawResult(
-		  unique_id = unique_id,
-		  start_logits = start_logits,
-		  end_logits = end_logits))
+      #all_results=[]
+      result=all_result
+      #for result in all_result:
+      unique_id = int(result["unique_ids"].int64_val[0])
+      start_logits = [float(x) for x in result["start_logits"].float_val]
+      end_logits = [float(x) for x in result["end_logits"].float_val]
+      # start_logits = np.array(start_logits).reshape(batch_size, max_seq_length)
+      # end_logits = np.array(end_logits).reshape(batch_size, max_seq_length)
+      all_results = RawResult(
+	  unique_id = unique_id,
+	  start_logits = start_logits,
+	  end_logits = end_logits)
       return all_results
     	#a3=[]
     	#for a in result:
