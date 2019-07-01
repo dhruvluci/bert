@@ -846,7 +846,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
   unique_id_to_result = {}
   for result in all_results:
-    unique_id_to_result[result.unique_id] = result
+    unique_id_to_result[result.unique_id] = result[0]
 
   _PrelimPrediction = collections.namedtuple(  # pylint: disable=invalid-name
       "PrelimPrediction",
