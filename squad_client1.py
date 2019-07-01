@@ -845,8 +845,11 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
     example_index_to_features[feature.example_index].append(feature)
 
   unique_id_to_result = {}
+  i=0
   for result in all_results:
+    i+=1
     unique_id_to_result[result.unique_id] = result
+  print(i)
 
   _PrelimPrediction = collections.namedtuple(  # pylint: disable=invalid-name
       "PrelimPrediction",
@@ -1397,7 +1400,9 @@ def get_qa(path):
 		#ri.append(clean_result)
 	rx =[]
 	i=-1
-	final_result=write_predictions(features[0], features[1], clean_result, 5, 30, False)
+	for res in clean_result
+		final_result=write_predictions(features[0], features[1], res, 5, 30, False)
+		rx.append(final_result)
 	#final_result=process_output(clean_result, 
 			   #features[0], 
 			   #features[1], 
@@ -1409,7 +1414,7 @@ def get_qa(path):
 			   #features[1], 
 			   #path, 5, 5, 30)
 		#rx.append(final_result)
-	return final_result
+	return rx
 
 def get_qa2(stringx):
 	def process_inputs(input_data):
