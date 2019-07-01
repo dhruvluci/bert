@@ -1238,8 +1238,7 @@ def get_qa(path):
 		result_future = stub.Predict.future(model_request, 30.0)  
 		raw_result = result_future.result().outputs
 		rs.append(raw_result)
-
-	  print(example)
+	  	print(example)
 	#for string_record1 in string_record:
 		#example = tf.train.Example()
 		#example.ParseFromString(string_record1)
