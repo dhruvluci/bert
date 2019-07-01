@@ -1403,7 +1403,7 @@ def get_qa(path):
 		ri.append(clean_result)
 	rx =[]
 	i=-1
-	return ri
+	#return ri
 	#final_result=process_output(rs, 
 			   #features[0], 
 			   #features[1], 
