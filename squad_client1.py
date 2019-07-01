@@ -1293,15 +1293,15 @@ def get_qa(path):
 	features=write_eval(path)
 	predict_file="eval.tf_record"
 	predict_file2=features
-	#hostport="34.74.195.118:8500"
-	hostport="127.0.0.1:8500"
+	hostport="34.74.195.118:8500"
+	#hostport="127.0.0.1:8500"
 	channel = grpc.insecure_channel(hostport)
 	stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
 	model_request = predict_pb2.PredictRequest()
 	model_request.model_spec.name = 'bert_qa'
 	#reader = tf.TFRecordReader()
 	#serialized_example = reader.read(predict_file)
-	string_record = tf.python_io.tf_record_iterator(path=predict_file)
+	#string_record = tf.python_io.tf_record_iterator(path=predict_file)
 	seq_length=384
 	name_to_features = {
 	      "unique_ids": tf.FixedLenFeature([], tf.int64),
@@ -1323,22 +1323,22 @@ def get_qa(path):
 		    batch_size=batch_size,
 		    drop_remainder=False))
 	#string_record = tf.io.parse_single_example(d, name_to_features)
-	model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
-	result_future = stub.Predict.future(model_request, 30.0)  
-	raw_result = result_future.result().outputs
-	print(raw_result)
+	#model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
+	#result_future = stub.Predict.future(model_request, 30.0)  
+	#raw_result = result_future.result().outputs
+	#print(raw_result)
 	rs=[]
 	record_iterator = tf.python_io.tf_record_iterator(path=predict_file)
-	for string_record1 in record_iterator:
+	for string_record in record_iterator:
 		example = tf.train.Example()
 		example.ParseFromString(string_record)
-		#model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
-		#result_future = stub.Predict.future(model_request, 30.0)  
-		#raw_result = result_future.result().outputs
-		#rs.append(raw_result)
+		model_request.inputs['examples'].CopyFrom(tf.contrib.util.make_tensor_proto(string_record, dtype=tf.string, shape=[batch_size]))
+		result_future = stub.Predict.future(model_request, 30.0)  
+		raw_result = result_future.result().outputs
+		rs.append(raw_result)
 		#print(example)
 		print("extraaaaaaaaaaalong")
-		#print(raw_result)
+		print(raw_result)
 	return raw_result
 	#for string_record1 in string_record:
 		#example = tf.train.Example()
