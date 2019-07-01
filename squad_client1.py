@@ -1408,7 +1408,7 @@ def get_qa(path):
 	final_result2=process_output(clean_result, 
 			   features[0], 
 			   features[1], 
-			   path, 5, 5, 30)
+			   path, True, 5, 30)
 	#for row in rs:
 		#i+=1
 		#final_result=process_output(row, 
