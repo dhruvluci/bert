@@ -1401,8 +1401,11 @@ def get_qa(path):
 		#result_future = stub.Predict.future(model_request, 30.0)  
 		#raw_result = result_future.result().outputs
 		#rs.append(raw_result)
-	clean_result=process_result(rs)
-	return clean_result
+	rp=[]
+	for r in rs:
+		clean_result=process_result(r)
+		rp.append(clean_result)
+	return rp
 	#final_result=process_output(clean_result, 
                    #features["eval_examples"], 
                    #features["eval_features"], 
