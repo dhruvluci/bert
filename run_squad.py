@@ -1196,7 +1196,7 @@ def main(_):
       use_tpu=False,
       model_fn=model_fn,
       config=run_config,
-      train_batch_size=6,
+      train_batch_size=24,
       predict_batch_size=8)
   estimator._export_to_tpu = False  ## !!important to add this
   estimator.export_saved_model(
