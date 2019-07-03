@@ -28,7 +28,7 @@ import optimization
 import tokenization
 import six
 import tensorflow as tf
-tf.contrib.tpu
+tf.contrib.resampler
 
 flags = tf.flags
 
