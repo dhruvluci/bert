@@ -918,11 +918,12 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
     seen_predictions = {}
     nbest = []
     print("prelim_preds len: " + str(len(prelim_predictions)))
-    for pred in prelim_predictions:
+    n_best_size=20
+    for pred in prelim_predictions:		
       if len(nbest) >= n_best_size:
         break
       feature = features[pred.feature_index]
-      if pred.start_index > 0:  # this is a non-null prediction
+      if pred.start_index > -5000:  # this is a non-null prediction
         tok_tokens = feature.tokens[pred.start_index:(pred.end_index + 1)]
         orig_doc_start = feature.token_to_orig_map[pred.start_index]
         orig_doc_end = feature.token_to_orig_map[pred.end_index]
@@ -939,13 +940,13 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         orig_text = " ".join(orig_tokens)
 
         final_text = get_final_text(tok_text, orig_text, do_lower_case)
-        if final_text in seen_predictions:
-          continue
+        #if final_text in seen_predictions:
+          #continue
 
-        seen_predictions[final_text] = True
+        #seen_predictions[final_text] = True
       else:
-        final_text = ""
-        seen_predictions[final_text] = True
+        final_text = str(pred_start_index)
+        #seen_predictions[final_text] = True
 
       nbest.append(
           _NbestPrediction(
@@ -984,7 +985,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
     assert len(nbest_json) >= 1
     all_predictions[example.qas_id] = nbest_json[0]["text"]
-    all_preds.append(nbest_json[0]["text"])
+    for n in nbest_json:	
+        all_preds.append(n["text"])
     print("all_preds len: " + str(len(all_predictions)))
 
     
