@@ -992,7 +992,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
     all_nbest_json[example.qas_id] = nbest_json
     all_preds2.append(all_nbest_json)
-  return all_preds2
+  return all_preds
 
   #with tf.gfile.GFile(output_prediction_file, "w") as writer:
     #writer.write(json.dumps(all_predictions, indent=4) + "\n")
@@ -1430,7 +1430,7 @@ def get_qa(path):
 			   #features[1], 
 			   #path, 5, 5, 30)
 		#rx.append(final_result)
-	return final_result, rs
+	return final_result
 
 def get_qa2(stringx):
 	def process_inputs(input_data):
