@@ -122,10 +122,10 @@ flags.DEFINE_integer(
     "nbest_predictions.json output file.")
 n_best_size=20
 flags.DEFINE_integer(
-    "max_answer_length", 30,
+    "max_answer_length", 70,
     "The maximum length of an answer that can be generated. This is needed "
     "because the start and end predictions are not conditioned on one another.")
-max_answer_length=30
+max_answer_length=70
 flags.DEFINE_bool("use_tpu", False, "Whether to use TPU or GPU/CPU.")
 use_tpu=False
 tf.flags.DEFINE_string(
@@ -956,7 +956,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
     # just create a nonce prediction in this case to avoid failure.
     if not nbest:
       nbest.append(
-          _NbestPrediction(text="empty", start_logit=0.0, end_logit=0.0))
+          _NbestPrediction(text="m", start_logit=0.0, end_logit=0.0))
 
     assert len(nbest) >= 1
 
