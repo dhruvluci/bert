@@ -1430,7 +1430,7 @@ def get_qa(path):
 			   #features[1], 
 			   #path, 5, 5, 30)
 		#rx.append(final_result)
-	return final_result
+	return final_result, rs
 
 def get_qa2(stringx):
 	def process_inputs(input_data):
