@@ -878,7 +878,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
       start_indexes = _get_best_indexes(result[1], n_best_size)
       end_indexes = _get_best_indexes(result[2], n_best_size)
       print(i)
-      # if we could have irrelevant answers, get the min score of irrelevant
+      # if we could have irrelevant answers, get the min score of irrelevant	
       for start_index in start_indexes:
         for end_index in end_indexes:
           # We could hypothetically create invalid predictions, e.g., predict
@@ -888,15 +888,15 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
             #continue
           #if end_index >= len(feature.tokens):
             #continue
-          if start_index not in feature.token_to_orig_map:
-            continue
-          if end_index not in feature.token_to_orig_map:
-            continue
+          #if start_index not in feature.token_to_orig_map:
+            #continue
+          #if end_index not in feature.token_to_orig_map:
+            #continue
           #if not feature.token_is_max_context.get(start_index, False):
             #continue
           #if end_index < start_index:
             #continue
-          length = end_index - start_index + 1
+          #length = end_index - start_index + 1
           #if length > max_answer_length:
             #continue
           prelim_predictions.append(
