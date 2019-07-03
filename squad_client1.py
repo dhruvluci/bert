@@ -884,21 +884,21 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
           # We could hypothetically create invalid predictions, e.g., predict
           # that the start of the span is in the question. We throw out all
           # invalid predictions.
-          if start_index >= len(feature.tokens):
-            continue
-          if end_index >= len(feature.tokens):
-            continue
+          #if start_index >= len(feature.tokens):
+            #continue
+          #if end_index >= len(feature.tokens):
+            #continue
           if start_index not in feature.token_to_orig_map:
             continue
           if end_index not in feature.token_to_orig_map:
             continue
-          if not feature.token_is_max_context.get(start_index, False):
-            continue
+          #if not feature.token_is_max_context.get(start_index, False):
+            #continue
           #if end_index < start_index:
             #continue
           length = end_index - start_index + 1
-          if length > max_answer_length:
-            continue
+          #if length > max_answer_length:
+            #continue
           prelim_predictions.append(
               _PrelimPrediction(
                   feature_index=feature_index,
