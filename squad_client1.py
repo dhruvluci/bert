@@ -861,6 +861,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
   all_nbest_json = collections.OrderedDict()
   scores_diff_json = collections.OrderedDict()
   i=0	
+  n_best_size=1
   for (example_index, example) in enumerate(all_examples):
     i+=1
     print(i)
@@ -871,7 +872,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
     min_null_feature_index = 0  # the paragraph slice with min mull score
     null_start_logit = 0  # the start logit at the slice with min null score
     null_end_logit = 0  # the end logit at the slice with min null score
-    i=0
+    i=0	
     for (feature_index, feature) in enumerate(features):
       i+=1
       result = unique_id_to_result[feature.unique_id]
