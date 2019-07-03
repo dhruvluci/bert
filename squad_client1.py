@@ -992,7 +992,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
 
     all_nbest_json[example.qas_id] = nbest_json
     all_preds2.append(all_nbest_json)
-  return all_preds
+  return all_preds2
 
   #with tf.gfile.GFile(output_prediction_file, "w") as writer:
     #writer.write(json.dumps(all_predictions, indent=4) + "\n")
