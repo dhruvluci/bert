@@ -925,9 +925,9 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
         break
       feature = features[pred.feature_index]
       if pred.start_index < 0:  # this is a non-null prediction
-	start_index=10	
+        start_index=10	
       if pred.end_index < 0: 
-	end_index=20
+        end_index=20
       if pred.start_index > 0: 	
         tok_tokens = feature.tokens[pred.start_index:(pred.end_index + 1)]
         orig_doc_start = feature.token_to_orig_map[pred.start_index]
