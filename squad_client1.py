@@ -965,8 +965,8 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
     for entry in nbest:
       total_scores.append(entry.start_logit + entry.end_logit)
       #if not best_non_null_entry:
-      if entry.text:
-          best_non_null_entry = entry
+      #if entry.text:
+      best_non_null_entry = entry
 
     probs = _compute_softmax(total_scores)
 
@@ -979,7 +979,7 @@ def write_predictions(all_examples, all_features, all_results, n_best_size,
       output["end_logit"] = entry.end_logit
       nbest_json.append(output)
 
-    assert len(nbest_json) >= 1
+    #assert len(nbest_json) >= 1
     all_predictions[example.qas_id] = nbest_json[0]["text"]
     all_preds.append(nbest_json[0]["text"])
     print("all_preds len: " + str(len(all_predictions)))
